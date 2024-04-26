@@ -1,5 +1,7 @@
 import Input from "@/components/Input";
-import React, { useState } from "react";
+import axios from "axios";
+import { log } from "console";
+import React, { useCallback, useState } from "react";
 
 const auth = () => {
   const [name, setName] = useState("");
@@ -15,6 +17,14 @@ const auth = () => {
       setVariant("Login");
     }
   };
+
+  const register = useCallback(async () => {
+    try {
+      await axios.post("/api/register");
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   return (
     <main className="w-full h-full relative bg-background-image bg-no-repeat bg-center bg-fixed bg-cover">
