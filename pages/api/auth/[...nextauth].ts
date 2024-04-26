@@ -18,7 +18,7 @@ export default NextAuth({
         },
         password: {
           label: "Password",
-          type: "passord",
+          type: "password",
         },
       },
       async authorize(credentials) {
@@ -44,6 +44,7 @@ export default NextAuth({
         if (!isCorrectPassword) {
           throw new Error("Incorrect password");
         }
+        console.log(user);
 
         return user;
       },

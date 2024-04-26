@@ -1,6 +1,6 @@
 import Input from "@/components/Input";
 import axios from "axios";
-import { log } from "console";
+import { signIn } from "next-auth/react";
 import React, { useCallback, useState } from "react";
 
 const auth = () => {
@@ -20,11 +20,29 @@ const auth = () => {
 
   const register = useCallback(async () => {
     try {
-      await axios.post("/api/register");
+      await axios.post("/api/register", {
+        name,
+        email,
+        password,
+      });
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [name, email, password]);
+
+  const login = useCallback(async () => {
+    try {
+      await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+        callbackUrl: "/",
+      });
+      console.log("Logged In");
+    } catch (error) {
+      console.error("Sign in error:", error); // Add error logging here
+    }
+  }, [email, password]);
 
   return (
     <main className="w-full h-full relative bg-background-image bg-no-repeat bg-center bg-fixed bg-cover">
@@ -62,7 +80,10 @@ const auth = () => {
                 value={password}
                 onChange={(e: any) => setPassword(e.target.value)}
               />
-              <button className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 duration-200 text-lg font-semibold">
+              <button
+                onClick={variant == "Login" ? login : register}
+                className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 duration-200 text-lg font-semibold"
+              >
                 {variant == "Login" ? "Login" : "Sign Up"}
               </button>
               <p className="text-neutral-500 mt-6">
