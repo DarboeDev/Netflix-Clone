@@ -2,8 +2,11 @@ import Input from "@/components/Input";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import React, { useCallback, useState } from "react";
+import { useRouter } from "next/router";
 
 const auth = () => {
+  const router = useRouter();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,10 +42,11 @@ const auth = () => {
         callbackUrl: "/",
       });
       console.log("Logged In");
+      router.push("/");
     } catch (error) {
-      console.error("Sign in error:", error); // Add error logging here
+      console.error("Sign in error:", error);
     }
-  }, [email, password]);
+  }, [email, password, router]);
 
   return (
     <main className="w-full h-full relative bg-background-image bg-no-repeat bg-center bg-fixed bg-cover">
